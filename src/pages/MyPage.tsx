@@ -11,11 +11,11 @@ export default function MyPage() {
     if (user?.user_metadata?.displayName) {
       setNewDisplayName(user.user_metadata.displayName);
     }
-  }, []);
+  }, [user?.user_metadata?.displayName]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    userUpdateMutation.mutate(newDisplayName);
+    userUpdateMutation.mutate(newDisplayName.trim());
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

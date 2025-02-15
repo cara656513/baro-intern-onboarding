@@ -14,17 +14,19 @@ export const useUserStore = create<UserStore>((set) => ({
   isLogin: false,
   isLoaded: false,
   setUser: async () => {
-    const { data, error } = await supabase.auth.getUser();
+    try {
+      const { data, error } = await supabase.auth.getUser();
 
-    if (error) {
-      console.error("사용자 정보 로딩 실패:", error);
-      set({ user: null, isLogin: false, isLoaded: true });
-    } else {
+      if (error) throw error;
+
       set({
         user: data.user,
         isLogin: !!data.user,
         isLoaded: true,
       });
+    } catch (error) {
+      console.error("사용자 정보 로딩 실패:", error);
+      set({ user: null, isLogin: false, isLoaded: true });
     }
   },
 }));

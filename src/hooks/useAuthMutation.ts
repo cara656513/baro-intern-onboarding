@@ -9,21 +9,16 @@ export const useAuthMutation = () => {
   const { setUser } = useUserStore();
 
   const signUpMutation = useMutation({
-    mutationFn: async (userData: UserData) => {
+    mutationFn: async ({ email, password, displayName }: UserData) => {
       const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
+        email,
+        password,
         options: {
-          data: {
-            displayName: userData.displayName,
-          },
+          data: { displayName },
         },
       });
 
-      if (error) {
-        throw error;
-      }
-
+      if (error) throw error;
       return data;
     },
     onSuccess: () => {
@@ -31,50 +26,50 @@ export const useAuthMutation = () => {
       navigate("/login");
     },
     onError: (error: Error) => {
+      console.error("회원가입 오류:", error);
       alert(error.message || "회원가입 중 오류가 발생했습니다.");
     },
   });
 
   const signInMutation = useMutation({
-    mutationFn: async (userData: UserData) => {
+    mutationFn: async ({ email, password }: Omit<UserData, "displayName">) => {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: userData.email,
-        password: userData.password,
+        email,
+        password,
       });
 
-      if (error) {
-        throw error;
-      }
-
+      if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      setUser();
+    onSuccess: async () => {
+      await setUser();
       navigate("/");
     },
-    onError: (error) => {
+    onError: (error: Error) => {
+      console.error("로그인 오류:", error);
       alert(error.message);
     },
   });
 
   const userUpdateMutation = useMutation({
     mutationFn: async (newDisplayName: string) => {
-      const { data, error } = await supabase.auth.updateUser({
-        data: {
-          displayName: newDisplayName,
-        },
-      });
-
-      if (error) {
-        throw error;
+      if (!newDisplayName.trim()) {
+        throw new Error("닉네임을 입력해주세요.");
       }
 
+      const { data, error } = await supabase.auth.updateUser({
+        data: { displayName: newDisplayName.trim() },
+      });
+
+      if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      await setUser();
       alert("닉네임이 변경되었습니다!");
     },
-    onError: (error) => {
+    onError: (error: Error) => {
+      console.error("닉네임 변경 오류:", error);
       alert(error.message);
     },
   });
