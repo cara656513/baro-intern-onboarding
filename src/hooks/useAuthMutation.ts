@@ -15,7 +15,7 @@ export const useAuthMutation = () => {
         password: userData.password,
         options: {
           data: {
-            nickname: userData.nickname,
+            displayName: userData.displayName,
           },
         },
       });
@@ -43,7 +43,6 @@ export const useAuthMutation = () => {
       });
 
       if (error) {
-        console.log(error);
         throw error;
       }
 
@@ -58,5 +57,27 @@ export const useAuthMutation = () => {
     },
   });
 
-  return { signInMutation, signUpMutation };
+  const userUpdateMutation = useMutation({
+    mutationFn: async (newDisplayName: string) => {
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          displayName: newDisplayName,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      alert("닉네임이 변경되었습니다!");
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
+  return { signInMutation, signUpMutation, userUpdateMutation };
 };

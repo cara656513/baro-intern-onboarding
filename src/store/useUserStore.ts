@@ -1,17 +1,22 @@
 import { create } from "zustand";
 import { User } from "@supabase/supabase-js";
-import { Session } from "@supabase/supabase-js";
+import supabase from "../utils/supabaseClient";
 
 interface UserStore {
   user: User | null;
-  setUser: (user: User | null) => void;
-  session: Session | null;
-  setSession: (session: Session | null) => void;
+  isLogin: boolean;
+  setUser: () => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
-  session: null,
-  setSession: (session) => set({ session }),
+  isLogin: false,
+  setUser: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      console.error("사용자 정보 로딩 실패:", error);
+    } else {
+      set({ user: data.user, isLogin: true });
+    }
+  },
 }));

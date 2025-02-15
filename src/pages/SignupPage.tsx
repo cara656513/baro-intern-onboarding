@@ -5,7 +5,7 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    nickname: "",
+    displayName: "",
   });
   const { signUpMutation } = useAuthMutation();
 
@@ -28,7 +28,7 @@ export default function SignupPage() {
                 이메일
               </label>
               <input
-                id="id"
+                id="email"
                 type="text"
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -58,19 +58,19 @@ export default function SignupPage() {
             </div>
             <div>
               <label
-                htmlFor="nickname"
+                htmlFor="displayName"
                 className="block text-sm font-medium text-gray-700"
               >
                 닉네임
               </label>
               <input
-                id="nickname"
+                id="displayName"
                 type="text"
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                value={formData.nickname}
+                value={formData.displayName}
                 onChange={(e) =>
-                  setFormData({ ...formData, nickname: e.target.value })
+                  setFormData({ ...formData, displayName: e.target.value })
                 }
               />
             </div>

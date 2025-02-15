@@ -1,56 +1,34 @@
 import { useState } from "react";
+import { useAuthMutation } from "../hooks/useAuthMutation";
 
 export default function MyPage() {
-  const [profile, setProfile] = useState({
-    username: "사용자",
-    email: "user@example.com",
-    avatar: "",
-  });
+  const [newDisplayName, setNewDisplayName] = useState("");
+  const { userUpdateMutation } = useAuthMutation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 프로필 업데이트 로직 구현
-    console.log("프로필 업데이트:", profile);
+    userUpdateMutation.mutate(newDisplayName);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
-        <h2 className="text-3xl font-bold text-center mb-8">마이 페이지</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="min-h-full flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+        <h2 className="text-3xl font-bold text-center">마이 페이지</h2>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="username"
+                htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                사용자 이름
+                닉네임
               </label>
               <input
-                id="username"
-                type="text"
+                id="newDisplayName"
+                type="newDisplayName"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                value={profile.username}
-                onChange={(e) =>
-                  setProfile({ ...profile, username: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                이메일
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                value={profile.email}
-                onChange={(e) =>
-                  setProfile({ ...profile, email: e.target.value })
-                }
+                value={newDisplayName}
+                onChange={(e) => setNewDisplayName(e.target.value)}
               />
             </div>
           </div>
