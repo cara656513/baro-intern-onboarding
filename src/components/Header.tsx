@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
 
 export default function Header() {
-  const { isLogin } = useUserStore();
+  const { isLogin, isLoaded } = useUserStore();
+  if (!isLoaded) return <div>Loading...</div>;
   return (
     <header className="sticky top-0 left-0 right-0 bg-white shadow z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,11 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Layout from "./components/Layout";
-import SignupPage from "./pages/SignupPage";
-import LoginPage from "./pages/LoginPage";
-import MyPage from "./pages/MyPage";
-import HomePage from "./pages/HomePage";
+import AppRoutes from "./shared/AppRoutes";
 import { useUserStore } from "./store/useUserStore";
 import { useEffect } from "react";
 
@@ -18,26 +14,13 @@ const queryClient = new QueryClient({
   },
 });
 
-function AppRoutes() {
-  const { setUser } = useUserStore();
+function App() {
+  const { setUser, user } = useUserStore();
 
   useEffect(() => {
     setUser();
-  }, [setUser]);
+  }, [user]);
 
-  return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-      </Route>
-    </Routes>
-  );
-}
-
-function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
