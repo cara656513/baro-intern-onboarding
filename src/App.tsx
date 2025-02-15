@@ -6,8 +6,6 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 
-import "./App.css";
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
