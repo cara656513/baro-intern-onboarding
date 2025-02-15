@@ -48,8 +48,8 @@ export const useAuthMutation = () => {
 
       return data;
     },
-    onSuccess: (data) => {
-      setUser(data.user);
+    onSuccess: () => {
+      setUser();
       navigate("/");
     },
     onError: (error) => {

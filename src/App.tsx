@@ -19,12 +19,12 @@ const queryClient = new QueryClient({
 });
 
 function AppRoutes() {
-  const { user, setUser } = useUserStore();
+  const { setUser } = useUserStore();
 
   useEffect(() => {
     setUser();
   }, [setUser]);
-  console.log("user", user);
+
   return (
     <Routes>
       <Route element={<Layout />}>
