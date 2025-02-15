@@ -11,7 +11,7 @@ export const useAuthMutation = () => {
   const signUpMutation = useMutation({
     mutationFn: async (userData: UserData) => {
       const { data, error } = await supabase.auth.signUp({
-        email: userData.id,
+        email: userData.email,
         password: userData.password,
         options: {
           data: {
@@ -38,23 +38,23 @@ export const useAuthMutation = () => {
   const signInMutation = useMutation({
     mutationFn: async (userData: UserData) => {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: userData.id,
+        email: userData.email,
         password: userData.password,
       });
 
       if (error) {
-        throw new Error("아이디 또는 비밀번호를 확인 해주세요.");
+        console.log(error);
+        throw error;
       }
 
       return data;
     },
     onSuccess: (data) => {
-      //성공하면 data.user를 업데이트 하고 홈 화면으로 이동
       setUser(data.user);
       navigate("/");
     },
     onError: (error) => {
-      console.error(error.message); //실패하면 에러메세지 출력
+      alert(error.message);
     },
   });
 
