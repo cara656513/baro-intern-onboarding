@@ -23,7 +23,7 @@ export const useAuthMutation = () => {
     },
     onSuccess: () => {
       alert("회원가입이 완료되었습니다!");
-      navigate("/login");
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       console.error("회원가입 오류:", error);
@@ -74,5 +74,20 @@ export const useAuthMutation = () => {
     },
   });
 
-  return { signInMutation, signUpMutation, userUpdateMutation };
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      await setUser();
+      alert("로그아웃 되었습니다!");
+    },
+    onError: (error: Error) => {
+      console.error("로그아웃 오류:", error);
+      alert(error.message);
+    },
+  });
+
+  return { signUpMutation, signInMutation, userUpdateMutation, logoutMutation };
 };
