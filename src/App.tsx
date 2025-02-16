@@ -15,11 +15,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const { setUser, user } = useUserStore();
+  const { setUser } = useUserStore();
 
   useEffect(() => {
     setUser();
-  }, [user]);
+  }, [setUser]);
 
   return (
     <QueryClientProvider client={queryClient}>
